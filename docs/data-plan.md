@@ -57,15 +57,26 @@ definition; it must never be confused with a pre-race feature.
 ### DNQ, DNPQ, withdrawals, and pit-lane starts
 
 These cases have different meanings and must not be conflated merely because
-some use `grid == 0`. Before modeling, document whether the population is all
-result rows or race starters only. If non-starters are retained, report their
-share and evaluate era bias because they cannot realistically podium.
+some use `grid == 0`.
+
+Policy adopted in the notebook:
+
+- Keep every official result row in `results_dedup`, the audited historical
+  base table.
+- Create `modeling_results` from that table by excluding only confirmed
+  non-starters: `Did not qualify`, `Did not prequalify`, and `Withdrew`.
+- Retain `grid == 0` rows unless they have one of those non-starter statuses,
+  because a zero can represent a legitimate pit-lane start.
+
+This prevents known non-starters from becoming trivially negative podium cases
+while preserving the full source population for audit and descriptive analysis.
 
 ### Indianapolis 500
 
-The 1950-1960 Indianapolis 500 is part of the championship data but differs
-substantially from other races. Decide whether to retain it, exclude it, or
-present it separately; document the rationale and apply it consistently.
+The 1950-1960 Indianapolis 500 is retained because it was part of the official
+World Championship data. It is flagged as `is_indianapolis_500` for sensitivity
+analysis because its field and competition context differ substantially from
+other F1 rounds.
 
 ### Qualifying coverage
 
