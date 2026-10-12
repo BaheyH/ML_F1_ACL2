@@ -1,0 +1,4 @@
+# Local copies of the Formula 1 source data. Each contributor downloads the
+# documented dataset version into this folder; raw files are not committed.
+/data/raw/
+/data/*.zip
