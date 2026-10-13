@@ -17,6 +17,15 @@ Potential valid groups:
 - **Context:** circuit and constructor identifiers encoded as categorical data,
   subject to validation evidence and unseen-category handling.
 
+### Initial compact baseline
+
+The first model uses: actual grid; qualifying position and its availability
+indicator; driver/constructor race counts, long-term podium rates, and last-5
+podium rates; and prior driver/constructor rank. This keeps features
+interpretable and comparable across historical scoring eras. Derived grid flags,
+raw standing points, and circuit/constructor identifiers remain available only
+for validation-only ablations.
+
 Never include current-race results, status, points, laps, pit stops, fastest
 lap, or other post-race information.
 
@@ -26,12 +35,14 @@ Use a chronological split, with an initial proposal of:
 
 | Split | Seasons | Purpose |
 |---|---|---|
-| Train | Through 2019 | fit models and preprocessing |
-| Validation | 2020-2021 | choose features, hyperparameters, and threshold |
+| Train | 1950-2017 | fit models and preprocessing |
+| Validation | 2018-2021 | choose features, hyperparameters, and threshold |
 | Test | 2022-2024 | final untouched evaluation |
 
-Confirm the dataset supports these years. Do not use random row-level splitting:
-that would mix future information with historical training data.
+This expands validation beyond the unusual 2020 season while retaining the most
+recent regulation era as the final future-style test. Do not use random
+row-level splitting: that would mix future information with historical training
+data.
 
 Fit all imputers, encoders, scalers, clipping bounds, and transformations on
 training data only. Validation can guide decisions; test data cannot.
